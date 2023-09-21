@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="G:\ImageCropper\cropper\src\main\shaders"/><source path="G:\ImageCropper\cropper\src\androidMain\shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="G:\ImageCropper\cropper\src\debug\shaders"/><source path="G:\ImageCropper\cropper\src\androidDebug\shaders"/></dataSet></merger>
