@@ -10,7 +10,7 @@ import java.io.IOException
 import javax.imageio.ImageIO
 
 actual class CroppingManager actual constructor() {
-    actual fun cropImage(filePath: String, x: Int, y: Int, width: Int, height: Int): ImageBitmap {
+    actual fun cropImageByFilePath(filePath: String, x: Int, y: Int, width: Int, height: Int): ImageBitmap {
         try {
             val originalImage = ImageIO.read(File(filePath))
             val croppedImage = originalImage.getSubimage(x, y, width, height)

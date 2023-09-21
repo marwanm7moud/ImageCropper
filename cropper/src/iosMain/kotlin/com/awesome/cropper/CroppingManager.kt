@@ -15,7 +15,7 @@ import platform.Foundation.NSDataReadingMappedAlways
 import platform.Foundation.NSDataWritingWithoutOverwriting
 
 actual class CroppingManager actual constructor() {
-    actual fun cropImage(filePath: String, x: Int, y: Int, width: Int, height: Int): ImageBitmap {
+    actual fun cropImageByFilePath(filePath: String, x: Int, y: Int, width: Int, height: Int): ImageBitmap {
         //todo NEED TO EDIT
 
         val uiImage = UIImage.imageWithContentsOfFile(filePath)
