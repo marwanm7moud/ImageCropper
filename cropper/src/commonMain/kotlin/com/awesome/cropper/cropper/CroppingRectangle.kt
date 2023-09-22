@@ -22,7 +22,8 @@ import androidx.compose.ui.unit.round
 
 @Composable
 fun CroppingRectangle(
-    imageSize : Dp
+    imageSize: Dp,
+    showGridLines: Boolean = true
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(200f, 200f)) }
     var croppingRectPosition by remember { mutableStateOf(Offset(100f, 100f)) }
@@ -66,6 +67,11 @@ fun CroppingRectangle(
             color = Color.Transparent,
             topLeft = Offset(0f, 0f),
             size = size
+        )
+        if (showGridLines)
+        drawGrid(
+            croppingShapeSize = croppingRectSize,
+            linesColor = Color.White
         )
     }
 }
