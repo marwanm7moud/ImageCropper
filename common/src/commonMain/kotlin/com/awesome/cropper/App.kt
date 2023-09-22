@@ -6,6 +6,6 @@ import com.awesome.cropper.cropper.ImageCropper
 
 @Composable
 fun App() {
-    ImageCropper()
+    ImageCropper("C:\\Users\\hp\\Desktop\\4t0oBFrJyweYPt0hocW6RUa0b6H.jpg")
 }
 

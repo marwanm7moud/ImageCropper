@@ -19,6 +19,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
+import com.awesome.cropper.utils.CroppingUtils
+import com.awesome.cropper.utils.CroppingUtils.movingOffsetWhileTouching
 
 @Composable
 fun CroppingRectangle(
@@ -40,21 +42,8 @@ fun CroppingRectangle(
                 detectTransformGestures { _, pan, _, _ ->
                     when {
                         // Check if touch is within the cropping rectangle
-                        touchOffset.x >= 0 && touchOffset.x <= croppingRectSize.width &&
-                                touchOffset.y >= 0 && touchOffset.y <= croppingRectSize.height -> {
-
-                            val maxX =
-                                imageSize.roundToPx() - croppingRectSize.width.dp.roundToPx()
-                            val maxY =
-                                imageSize.roundToPx() - croppingRectSize.height.dp.roundToPx()
-
-                            // Check if the new position is within the boundaries
-                            val newX =
-                                (croppingRectPosition.x + pan.x).coerceIn(0f, maxX.toFloat())
-                            val newY =
-                                (croppingRectPosition.y + pan.y).coerceIn(0f, maxY.toFloat())
-
-                            croppingRectPosition = Offset(newX, newY)
+                        CroppingUtils.checkIfTouchInCroppingRectangle(touchOffset, croppingRectSize) -> {
+                            croppingRectPosition = movingOffsetWhileTouching(Size(imageSize.value , imageSize.value) ,croppingRectSize ,croppingRectPosition , pan )
                             isCroppingRectMoving = true
                         }
                         // The user is not touching the cropping rectangle
@@ -69,9 +58,9 @@ fun CroppingRectangle(
             size = size
         )
         if (showGridLines)
-        drawGrid(
-            croppingShapeSize = croppingRectSize,
-            linesColor = Color.White
-        )
+            drawGrid(
+                croppingShapeSize = croppingRectSize,
+                linesColor = Color.White
+            )
     }
 }
