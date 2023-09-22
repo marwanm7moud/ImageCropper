@@ -1,6 +1,7 @@
 package com.awesome.cropper
 
 import androidx.compose.ui.graphics.ImageBitmap
+import io.kamel.core.utils.File
 import platform.UIKit.UIImage
 import platform.UIKit.imageWithCGImage
 import platform.CoreGraphics.CGRect
@@ -15,10 +16,10 @@ import platform.Foundation.NSDataReadingMappedAlways
 import platform.Foundation.NSDataWritingWithoutOverwriting
 
 actual class CroppingManager actual constructor() {
-    actual fun cropImageByFilePath(filePath: String, x: Int, y: Int, width: Int, height: Int): ImageBitmap {
+    actual fun cropImageByFile(file: File, x: Int, y: Int, width: Int, height: Int): ImageBitmap{
         //todo NEED TO EDIT
 
-        val uiImage = UIImage.imageWithContentsOfFile(filePath)
+        val uiImage = UIImage.imageWithContentsOfFile(file)
         val cgImage = uiImage.CGImage
 
         val rect = CGRectMake(x.toDouble(), y.toDouble(), width.toDouble(), height.toDouble())
