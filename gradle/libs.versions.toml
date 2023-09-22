@@ -12,6 +12,7 @@ compose-uitooling = "1.5.1"
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 compose-uitooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-uitooling" }
+androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version = "1.5.1" }
 
 [plugins]
 

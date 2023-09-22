@@ -90,3 +90,6 @@ android {
         minSdk = 24
     }
 }
+dependencies {
+    implementation(libs.androidx.ui.graphics.android)
+}

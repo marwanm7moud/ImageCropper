@@ -1,5 +1,6 @@
 package com.awesome.cropper.cropper
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTransformGestures
@@ -26,77 +27,54 @@ import io.kamel.image.asyncPainterResource
 
 @Composable
 fun ImageCropper(
-    imagePath:String = "C:\\Users\\hp\\Desktop\\4t0oBFrJyweYPt0hocW6RUa0b6H.jpg"
+    imagePath: String
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(200f, 200f)) }
-    var croppingRectPosition by remember { mutableStateOf(Offset(50f, 50f)) }
+    var croppingRectPosition by remember { mutableStateOf(Offset(100f, 100f)) }
 
     var isCroppingRectMoving by remember { mutableStateOf(false) }
-    var touchOffset by remember { mutableStateOf(Offset(0f, 0f)) }
-
-    // Create a mutable state to hold the cropped image
-    var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
-
-    // Function to crop the image
-    fun cropAndShowImage() {
-        // Calculate the cropping rectangle dimensions in pixels
-        val x = croppingRectPosition.x.toInt()
-        val y = croppingRectPosition.y.toInt()
-        val width = croppingRectSize.width.toInt()
-        val height = croppingRectSize.height.toInt()
-        
-        val croppedImageBitmap = CroppingManager().cropImage(imagePath, x, y, width, height)
-        croppedImage = croppedImageBitmap
-    }
+    val touchOffset by remember { mutableStateOf(Offset(0f, 0f)) }
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().background(Color.Red)
     ) {
         KamelImage(
             resource = asyncPainterResource(data = File(imagePath)),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Fit
         )
-        // Overlay cropping rectangles
-        Box(
+
+        Canvas(
             modifier = Modifier
-                .fillMaxSize()
+                .size(croppingRectSize.width.dp, croppingRectSize.height.dp)
+                .offset { croppingRectPosition.round() }
+                .background(Color.Transparent)
+                .border(2.dp, Color.White)
                 .pointerInput(Unit) {
-                    detectTransformGestures { _, pan, zoom, _ ->
-                        // Handle zooming gestures
-                        // Update cropping rectangle size accordingly
-                        croppingRectSize *= zoom
+                    detectTransformGestures { _, pan, _, _ ->
+                        when {
+                            // Check if touch is within the cropping rectangle
+                            touchOffset.x >= 0 && touchOffset.x <= croppingRectSize.width &&
+                                    touchOffset.y >= 0 && touchOffset.y <= croppingRectSize.height -> {
+                                // The user is touching and dragging the cropping rectangle
+                                croppingRectPosition = Offset(
+                                    croppingRectPosition.x + pan.x,
+                                    croppingRectPosition.y + pan.y
+                                )
+                                isCroppingRectMoving = true
+                            }
+                            // The user is not touching the cropping rectangle
+                            else -> isCroppingRectMoving = false
+                        }
                     }
                 }
         ) {
-            // Draw cropping rectangles
-            Box(
-                modifier = Modifier
-                    .size(croppingRectSize.width.dp, croppingRectSize.height.dp)
-                    .offset { croppingRectPosition.round() }
-                    .background(Color.Transparent)
-                    .border(2.dp, Color.White)
-                    .pointerInput(Unit) {
-                        detectTransformGestures { _, pan, _, _ ->
-                            when {
-                                // Check if touch is within the cropping rectangle
-                                touchOffset.x >= 0 && touchOffset.x <= croppingRectSize.width &&
-                                        touchOffset.y >= 0 && touchOffset.y <= croppingRectSize.height -> {
-                                    // The user is touching and dragging the cropping rectangle
-                                    croppingRectPosition = Offset(
-                                        croppingRectPosition.x + pan.x,
-                                        croppingRectPosition.y + pan.y
-                                    )
-                                    isCroppingRectMoving = true
-                                }
-                                // The user is not touching the cropping rectangle
-                                else -> isCroppingRectMoving = false
-                            }
-                        }
-                    }
+            drawRect(
+                color = Color.Transparent,
+                topLeft = Offset(0f, 0f),
+                size = size
             )
         }
     }
 }
-
