@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.round
 import com.awesome.cropper.CroppingManager
+import com.awesome.cropper.getFileByPath
 import com.awesome.cropper.getScreenSize
 import io.kamel.core.getOrNull
 import io.kamel.core.utils.File
@@ -38,7 +39,7 @@ fun ImageCropper(
         modifier = Modifier.fillMaxSize().background(Color.Red)
     ) {
         KamelImage(
-            resource = asyncPainterResource(data = File(imagePath)),
+            resource = asyncPainterResource(data = getFileByPath(imagePath)),
             contentDescription = null,
             modifier = Modifier.size(imageSize),
             contentScale = ContentScale.Crop
