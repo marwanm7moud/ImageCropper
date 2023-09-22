@@ -1023,3 +1023,37 @@
 /cropper/build/classes/kotlin/desktop/main/com/awesome/cropper/cropper/ImageCropperKt$ImageCropper$lambda$16$$inlined$asyncPainterResource-g1dz1aI$2.class
 /.gradle/kotlin/sessions/kotlin-compiler-6932253748985533373.salive
 /.gradle/kotlin/sessions/kotlin-compiler-9900244069891156409.salive
+
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea/
+.gradle
+/*/local.properties
+/*/out
+/*/*/build
+/*/*/production
+*.iml
+*.iws
+*.ipr
+*~
+*.swp
