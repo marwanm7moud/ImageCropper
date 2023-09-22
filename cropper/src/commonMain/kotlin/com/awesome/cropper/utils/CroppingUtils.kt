@@ -20,7 +20,7 @@ object CroppingUtils {
         val maxX =
             imageSize.width.dp.roundToPx() - croppingRectSize.width.dp.roundToPx()
         val maxY =
-            imageSize.width.dp.roundToPx() - croppingRectSize.height.dp.roundToPx()
+            imageSize.height.dp.roundToPx() - croppingRectSize.height.dp.roundToPx()
 
         val newX =
             (croppingRectPosition.x + pan.x).coerceIn(0f, maxX.toFloat())
