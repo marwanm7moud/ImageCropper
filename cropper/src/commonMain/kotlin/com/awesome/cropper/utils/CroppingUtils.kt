@@ -18,14 +18,14 @@ object CroppingUtils {
         pan: Offset
     ): Offset {
         val maxX =
-            imageSize.width.dp.roundToPx() - croppingRectSize.width.dp.roundToPx()
+            imageSize.width - croppingRectSize.width
         val maxY =
-            imageSize.height.dp.roundToPx() - croppingRectSize.height.dp.roundToPx()
+            imageSize.height - croppingRectSize.height
 
         val newX =
-            (croppingRectPosition.x + pan.x).coerceIn(0f, maxX.toFloat())
+            (croppingRectPosition.x + pan.x).coerceIn(0f, maxX)
         val newY =
-            (croppingRectPosition.y + pan.y).coerceIn(0f, maxY.toFloat())
+            (croppingRectPosition.y + pan.y).coerceIn(0f, maxY)
         return Offset(newX, newY)
     }
 }

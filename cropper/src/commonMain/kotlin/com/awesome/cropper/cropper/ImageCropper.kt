@@ -29,7 +29,6 @@ import com.awesome.cropper.getScreenSize
 fun ImageCropper(
     imagePath: String
 ) {
-    val imageSize = 800.dp
     val image = getImageByFilePath(imagePath)
 
     Box(
@@ -39,9 +38,9 @@ fun ImageCropper(
         Image(
             bitmap = image,
             contentDescription = null,
-            modifier = Modifier.size(imageSize),
-            contentScale = ContentScale.Crop
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
         )
-        CroppingRectangle(imageSize)
+        CroppingRectangle()
     }
 }
