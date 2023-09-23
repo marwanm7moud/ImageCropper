@@ -45,7 +45,6 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.material3)
                 implementation(compose.foundation)
-                implementation("media.kamel:kamel-image:0.7.3")
 
             }
         }

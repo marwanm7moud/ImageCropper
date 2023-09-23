@@ -1,23 +1,31 @@
 package com.awesome.cropper
 
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toAwtImage
 import androidx.compose.ui.graphics.toComposeImageBitmap
-import java.awt.image.BufferedImage
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
 
 actual class CroppingManager actual constructor() {
-    actual fun cropImageByFile(file: File, x: Int, y: Int, width: Int, height: Int): ImageBitmap{
+    actual fun cropImageByImageBitmap(
+        image: ImageBitmap,
+        x: Int,
+        y: Int,
+        width: Int,
+        height: Int
+    ): ImageBitmap {
         try {
-            val originalImage = ImageIO.read(file)
+            // Convert the ImageBitmap to a BufferedImage
+            val originalImage = image.toAwtImage()
+
+            // Crop the BufferedImage
             val croppedImage = originalImage.getSubimage(x, y, width, height)
+
+            // Convert the cropped BufferedImage back to an ImageBitmap
             return croppedImage.toComposeImageBitmap()
         } catch (e: IOException) {
             e.printStackTrace()
-            return ImageBitmap(0 , 0)
+            return ImageBitmap(0, 0)
         }
     }
 }

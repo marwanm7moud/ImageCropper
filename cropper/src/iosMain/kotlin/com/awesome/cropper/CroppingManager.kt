@@ -16,21 +16,30 @@ import platform.Foundation.NSDataReadingMappedAlways
 import platform.Foundation.NSDataWritingWithoutOverwriting
 
 actual class CroppingManager actual constructor() {
-    actual fun cropImageByFile(file: File, x: Int, y: Int, width: Int, height: Int): ImageBitmap{
-        //todo NEED TO EDIT
+    actual fun cropImageByImageBitmap(
+        image: ImageBitmap, x: Int, y: Int, width: Int, height: Int
+    ): ImageBitmap {
+        try {
+            val nsImage = image.nsImage.freeze() // Convert ImageBitmap to NSImage
+            val cgImage = nsImage.CGImage
 
-        val uiImage = UIImage.imageWithContentsOfFile(file)
-        val cgImage = uiImage.CGImage
+            // Create a CGRect representing the crop area
+            val cropRect = CGRect(
+                origin = CGPointMake(x.toDouble(), y.toDouble()),
+                size = CGSizeMake(width.toDouble(), height.toDouble())
+            )
 
-        val rect = CGRectMake(x.toDouble(), y.toDouble(), width.toDouble(), height.toDouble())
-        val croppedCgImage = cgImage?.cropping(toRect = rect)
+            // Crop the image using CGImageCreateWithImageInRect
+            val croppedCGImage = cgImage?.let { CGImageCreateWithImageInRect(it, cropRect) }
 
-        val croppedUiImage = UIImage.imageWithCGImage(croppedCgImage, scale = uiImage.scale, orientation = uiImage.imageOrientation)
+            // Create a new UIImage from the cropped CGImage
+            val croppedUIImage = croppedCGImage?.let { UIImage.imageWithCGImage(it) }
 
-        val data = croppedUiImage.pngData()
-        val length = data.length.toLong()
-        val byteArray = data.toByteArray()
-
-        return byteArray
+            // Convert UIImage back to ImageBitmap
+            return croppedUIImage?.toImageBitmap() ?: ImageBitmap(0, 0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return ImageBitmap(0, 0)
+        }
     }
 }

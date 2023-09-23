@@ -21,12 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.round
 import com.awesome.cropper.CroppingManager
-import com.awesome.cropper.getFileByPath
+import com.awesome.cropper.getImageByFilePath
 import com.awesome.cropper.getScreenSize
-import io.kamel.core.getOrNull
-import io.kamel.core.utils.File
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
 
 
 @Composable
@@ -34,12 +30,14 @@ fun ImageCropper(
     imagePath: String
 ) {
     val imageSize = 800.dp
+    val image = getImageByFilePath(imagePath)
 
     Box(
         modifier = Modifier.fillMaxSize().background(Color.Red)
     ) {
-        KamelImage(
-            resource = asyncPainterResource(data = getFileByPath(imagePath)),
+        if (image!=null)
+        Image(
+            bitmap = image,
             contentDescription = null,
             modifier = Modifier.size(imageSize),
             contentScale = ContentScale.Crop
