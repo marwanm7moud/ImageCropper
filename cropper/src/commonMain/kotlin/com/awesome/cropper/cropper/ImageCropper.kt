@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -32,15 +33,17 @@ fun ImageCropper(
     val image = getImageByFilePath(imagePath)
 
     Box(
-        modifier = Modifier.fillMaxSize().background(Color.Red)
+        modifier = Modifier.fillMaxSize().background(Color.Red),
+        contentAlignment = Alignment.Center
     ) {
-        if (image!=null)
-        Image(
-            bitmap = image,
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillBounds
-        )
-        CroppingRectangle()
+        if (image!=null) {
+            Image(
+                bitmap = image,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Fit
+            )
+            CroppingRectangle(aspectRatio = (image.width / image.height.toFloat()))
+        }
     }
 }

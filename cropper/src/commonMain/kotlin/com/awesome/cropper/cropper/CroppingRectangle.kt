@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
@@ -27,7 +28,7 @@ import com.awesome.cropper.utils.CroppingUtils.movingOffsetWhileTouching
 
 @Composable
 fun CroppingRectangle(
-    //imageSize: Dp,
+    aspectRatio: Float = 1f, //use it when we use Scale Fit
     showGridLines: Boolean = true
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(200f, 200f)) }
@@ -38,6 +39,7 @@ fun CroppingRectangle(
     Canvas(
         modifier = Modifier
             .fillMaxSize()
+            .aspectRatio(aspectRatio)
             .pointerInput(Unit) {
                 detectTransformGestures { _, pan, _, _ ->
                     when {
