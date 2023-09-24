@@ -1,32 +1,33 @@
 package com.awesome.cropper
 
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
-import io.kamel.core.utils.File
 import platform.UIKit.UIImage
 import platform.UIKit.imageWithCGImage
 import platform.CoreGraphics.CGRect
-import platform.CoreGraphics.CGRectMake
-import platform.CoreGraphics.CGSize
 import platform.CoreGraphics.CGSizeMake
 import platform.CoreGraphics.CGImage
-import platform.Foundation.NSData
-import platform.Foundation.dataWithBytesNoCopy
-import platform.Foundation.length
-import platform.Foundation.NSDataReadingMappedAlways
-import platform.Foundation.NSDataWritingWithoutOverwriting
 
 actual class CroppingManager actual constructor() {
     actual fun cropImageByImageBitmap(
-        image: ImageBitmap, x: Int, y: Int, width: Int, height: Int
+        image: ImageBitmap,
+        cropPosition:Offset,
+        cropSize: Size,
+        windowSize:Size,
     ): ImageBitmap {
         try {
             val nsImage = image.nsImage.freeze() // Convert ImageBitmap to NSImage
             val cgImage = nsImage.CGImage
 
+            val heightRatio =
+                (image.height / windowSize.height)
+            val widthRatio = (image.width / windowSize.width)
+
             // Create a CGRect representing the crop area
             val cropRect = CGRect(
-                origin = CGPointMake(x.toDouble(), y.toDouble()),
-                size = CGSizeMake(width.toDouble(), height.toDouble())
+                origin = CGPointMake((cropPosition.x * widthRatio).toInt(), (cropPosition.y * heightRatio).toInt()),
+                size = CGSizeMake((cropSize.width * widthRatio).toInt(),(cropSize.height * heightRatio).toInt())
             )
 
             // Crop the image using CGImageCreateWithImageInRect
