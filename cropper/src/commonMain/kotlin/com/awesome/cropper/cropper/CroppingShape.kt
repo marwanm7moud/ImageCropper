@@ -1,14 +1,9 @@
 package com.awesome.cropper.cropper
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,20 +12,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
-import com.awesome.cropper.utils.CroppingUtils
+import com.awesome.cropper.shapes.rectangleShape
 import com.awesome.cropper.utils.CroppingUtils.movingOffsetWhileTouching
 
 @Composable
-fun CroppingRectangle(
+fun CroppingShape(
     aspectRatio: Float = 1f, //use it when we use Scale Fit
     showGridLines: Boolean = true,
     onChange: (croppingRectSize: Size, croppingRectPosition: Offset, windowSize: Size) -> Unit
 ) {
-    var croppingRectSize by remember { mutableStateOf(Size(200f, 200f)) }
-    var croppingRectPosition by remember { mutableStateOf(Offset(0f, 0f)) }
+    var croppingRectSize by remember { mutableStateOf(Size(0f, 0f)) }
+    var croppingRectPosition by remember { mutableStateOf(Offset(10f, 10f)) }
 
     Canvas(
         modifier = Modifier
@@ -53,22 +46,10 @@ fun CroppingRectangle(
             croppingRectPosition,
             size
         )
-        drawRect(
-            color = Color.Transparent, // Make the inside transparent
-            topLeft = croppingRectPosition,
-            size = Size(croppingRectSize.width, croppingRectSize.height)
+        rectangleShape(
+            croppingRectSize = croppingRectSize,
+            croppingRectPosition = croppingRectPosition,
+            showGridLines = showGridLines
         )
-        drawRect(
-            color = Color.White, // Add a white border
-            topLeft = croppingRectPosition,
-            size = Size(croppingRectSize.width, croppingRectSize.height),
-            style = Stroke(2f) // Adjust the border width as needed
-        )
-        if (showGridLines)
-            drawGrid(
-                croppingShapeSize = croppingRectSize,
-                linesColor = Color.White,
-                croppingRectPosition = croppingRectPosition
-            )
     }
 }
