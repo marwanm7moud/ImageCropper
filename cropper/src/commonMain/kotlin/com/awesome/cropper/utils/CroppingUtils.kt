@@ -7,12 +7,13 @@ import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.awesome.cropper.CroppingManager
-import org.jetbrains.skia.Bitmap
 
 object CroppingUtils {
-    fun checkIfTouchInCroppingRectangle(touchOffset: Offset, croppingRectSize: Size): Boolean {
-        return touchOffset.x >= 0 && touchOffset.x <= croppingRectSize.width &&
-                touchOffset.y >= 0 && touchOffset.y <= croppingRectSize.height
+    fun checkIfTouchInCroppingShape(touchOffset: Offset, croppingRectSize: Size , croppingRectPosition: Offset): Boolean {
+        val x = croppingRectPosition.x
+        val y = croppingRectPosition.y
+        return return touchOffset.x >= x && touchOffset.x <= x + croppingRectSize.width &&
+                touchOffset.y >= y && touchOffset.y <= y + croppingRectSize.height
     }
 
     fun PointerInputScope.movingOffsetWhileTouching(

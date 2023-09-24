@@ -1,6 +1,7 @@
 package com.awesome.cropper.cropper
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.input.pointer.pointerInput
 import com.awesome.cropper.shapes.rectangleShape
+import com.awesome.cropper.utils.CroppingUtils.checkIfTouchInCroppingShape
 import com.awesome.cropper.utils.CroppingUtils.movingOffsetWhileTouching
 
 @Composable
@@ -24,6 +26,7 @@ fun CroppingShape(
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(0f, 0f)) }
     var croppingRectPosition by remember { mutableStateOf(Offset(10f, 10f)) }
+    var isTouchingTheCroppingShape by remember { mutableStateOf(false) }
 
     Canvas(
         modifier = Modifier
@@ -31,13 +34,22 @@ fun CroppingShape(
             .aspectRatio(aspectRatio)
             .pointerInput(Unit) {
                 detectTransformGestures { _, pan, _, _ ->
-                    croppingRectPosition = movingOffsetWhileTouching(
-                        Size(
-                            size.width.toFloat(),
-                            size.height.toFloat()
-                        ), croppingRectSize, croppingRectPosition, pan
-                    )
+                    if (isTouchingTheCroppingShape)
+                        croppingRectPosition = movingOffsetWhileTouching(
+                            Size(
+                                size.width.toFloat(),
+                                size.height.toFloat()
+                            ), croppingRectSize, croppingRectPosition, pan
+                        )
                 }
+            }
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onPress = {
+                        isTouchingTheCroppingShape =
+                            checkIfTouchInCroppingShape(it, croppingRectSize, croppingRectPosition)
+                    }
+                )
             }
     ) {
         croppingRectSize = size * 0.5f
