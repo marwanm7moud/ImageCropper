@@ -20,13 +20,14 @@ import com.awesome.cropper.utils.CroppingUtils.movingOffsetWhileTouching
 
 @Composable
 fun CroppingShape(
-    aspectRatio: Float = 1f, //use it when we use Scale Fit
+    aspectRatio: Float = 1f,
     showGridLines: Boolean = true,
     onChange: (croppingRectSize: Size, croppingRectPosition: Offset, windowSize: Size) -> Unit
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(0f, 0f)) }
-    var croppingRectPosition by remember { mutableStateOf(Offset(0f, 0f)) }
+    var croppingRectPosition by remember { mutableStateOf(Offset(20f, 20f)) }
     var isTouchingTheCroppingShape by remember { mutableStateOf(false) }
+    var previousWindowSize by remember { mutableStateOf(Size(0f, 0f)) }
 
     Canvas(
         modifier = Modifier
@@ -34,13 +35,15 @@ fun CroppingShape(
             .aspectRatio(aspectRatio)
             .pointerInput(Unit) {
                 detectTransformGestures { _, pan, _, _ ->
-                    if (isTouchingTheCroppingShape)
-                        croppingRectPosition = movingOffsetWhileTouching(
+                    if (isTouchingTheCroppingShape) {
+                        val newCroppingRectPosition = movingOffsetWhileTouching(
                             Size(
                                 size.width.toFloat(),
                                 size.height.toFloat()
                             ), croppingRectSize, croppingRectPosition, pan
                         )
+                        croppingRectPosition = newCroppingRectPosition
+                    }
                 }
             }
             .pointerInput(Unit) {
@@ -52,6 +55,17 @@ fun CroppingShape(
                 )
             }
     ) {
+        if (previousWindowSize == Size(0f, 0f)) previousWindowSize = size
+        if (previousWindowSize != size) {
+            val ratioX = size.width / previousWindowSize.width
+            val ratioY = size.height / previousWindowSize.height
+            croppingRectPosition = Offset(
+                croppingRectPosition.x * ratioX,
+                croppingRectPosition.y * ratioY
+            )
+            previousWindowSize = size
+        }
+
         croppingRectSize = size * 0.5f
         onChange(
             croppingRectSize,
