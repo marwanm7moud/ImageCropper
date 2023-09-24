@@ -9,7 +9,11 @@ import androidx.compose.ui.unit.dp
 import com.awesome.cropper.CroppingManager
 
 object CroppingUtils {
-    fun checkIfTouchInCroppingShape(touchOffset: Offset, croppingRectSize: Size , croppingRectPosition: Offset): Boolean {
+    fun checkIfTouchInCroppingShape(
+        touchOffset: Offset,
+        croppingRectSize: Size,
+        croppingRectPosition: Offset
+    ): Boolean {
         val x = croppingRectPosition.x
         val y = croppingRectPosition.y
         return return touchOffset.x >= x && touchOffset.x <= x + croppingRectSize.width &&
@@ -41,24 +45,32 @@ object CroppingUtils {
         windowSize: Size,
         density: Density,
     ): ImageBitmap {
-        //Calculate the cropping rectangle position in pixels
+        // Calculate the cropping rectangle position in pixels
         val position = density.run {
-            Pair(croppingRectPosition.x.dp.roundToPx(), croppingRectPosition.y.dp.roundToPx())
+            Offset(
+                croppingRectPosition.x.dp.roundToPx().toFloat(),
+                croppingRectPosition.y.dp.roundToPx().toFloat()
+            )
         }
         // Calculate the cropping rectangle dimensions in pixels
         val size = density.run {
-            Pair(
-                croppingRectSize.width.dp.roundToPx(),
-                croppingRectSize.height.dp.roundToPx()
+            Size(
+                croppingRectSize.width.dp.roundToPx().toFloat(),
+                croppingRectSize.height.dp.roundToPx().toFloat()
             )
         }
+
+        // Calculate width and height ratios
+        val widthRatio = image.width.toFloat() / windowSize.width.toFloat()
+        val heightRatio = image.height.toFloat() / windowSize.height.toFloat()
+
         return CroppingManager().cropImageByImageBitmap(
             image,
             cropPosition = Offset(
-                position.first.toFloat(),
-                position.second.toFloat()
-            ) * ((size.first / size.second).toFloat()),
-            cropSize = Size(size.first.toFloat(), size.second.toFloat()),
+                position.x * widthRatio,
+                position.y * heightRatio
+            ),
+            cropSize = Size(size.width * widthRatio, size.height * heightRatio),
             windowSize = windowSize,
         )
     }

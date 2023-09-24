@@ -5,6 +5,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toAwtImage
 import androidx.compose.ui.graphics.toComposeImageBitmap
+import org.jetbrains.skiko.toImage
 import java.awt.Image
 import java.io.IOException
 
@@ -16,18 +17,14 @@ actual class CroppingManager actual constructor() {
         windowSize: Size,
     ): ImageBitmap {
         try {
-            val heightRatio =
-                (image.height / windowSize.height)
-            val widthRatio = (image.width / windowSize.width)
-
             // Convert the ImageBitmap to a BufferedImage
             val originalImage = image.toAwtImage()
             // Crop the BufferedImage
             val croppedImage = originalImage.getSubimage(
-                (cropPosition.x * widthRatio ).toInt(),
-                (cropPosition.y * heightRatio).toInt(),
-                (cropSize.width * widthRatio).toInt(),
-                (cropSize.height * heightRatio).toInt()
+                cropPosition.x.toInt(),
+                cropPosition.y.toInt(),
+                cropSize.width.toInt(),
+                cropSize.height.toInt()
             )
 
             // Convert the cropped BufferedImage back to an ImageBitmap

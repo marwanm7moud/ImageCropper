@@ -25,7 +25,7 @@ fun CroppingShape(
     onChange: (croppingRectSize: Size, croppingRectPosition: Offset, windowSize: Size) -> Unit
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(0f, 0f)) }
-    var croppingRectPosition by remember { mutableStateOf(Offset(10f, 10f)) }
+    var croppingRectPosition by remember { mutableStateOf(Offset(0f, 0f)) }
     var isTouchingTheCroppingShape by remember { mutableStateOf(false) }
 
     Canvas(

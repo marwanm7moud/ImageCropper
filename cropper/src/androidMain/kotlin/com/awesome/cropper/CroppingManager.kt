@@ -16,17 +16,13 @@ actual class CroppingManager actual constructor() {
         cropSize: Size,
         windowSize: Size,
     ): ImageBitmap {
-        val heightRatio =
-            (image.height / windowSize.height)
-        val widthRatio = (image.width / windowSize.width)
-
         val bitmap = image.asAndroidBitmap()
         val croppedBitmap = Bitmap.createBitmap(
             bitmap,
-            (cropPosition.x * widthRatio).toInt(),
-            (cropPosition.y * heightRatio).toInt(),
-            (cropSize.width * widthRatio).toInt(),
-            (cropSize.height * heightRatio).toInt()
+            cropPosition.x.toInt(),
+            cropPosition.y.toInt(),
+            cropSize.width.toInt(),
+            cropSize.height.toInt()
         )
         val outputStream = ByteArrayOutputStream()
         croppedBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)

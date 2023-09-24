@@ -20,14 +20,12 @@ actual class CroppingManager actual constructor() {
             val nsImage = image.nsImage.freeze() // Convert ImageBitmap to NSImage
             val cgImage = nsImage.CGImage
 
-            val heightRatio =
-                (image.height / windowSize.height)
-            val widthRatio = (image.width / windowSize.width)
+
 
             // Create a CGRect representing the crop area
             val cropRect = CGRect(
-                origin = CGPointMake((cropPosition.x * widthRatio).toInt(), (cropPosition.y * heightRatio).toInt()),
-                size = CGSizeMake((cropSize.width * widthRatio).toInt(),(cropSize.height * heightRatio).toInt())
+                origin = CGPointMake(cropPosition.x.toInt(), cropPosition.y.toInt()),
+                size = CGSizeMake(cropSize.width.toInt(),cropSize.height.toInt())
             )
 
             // Crop the image using CGImageCreateWithImageInRect
