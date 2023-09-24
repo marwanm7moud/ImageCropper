@@ -3,6 +3,7 @@ package com.awesome.cropper.cropper
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,41 +20,39 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.round
-import androidx.compose.ui.unit.toSize
 import com.awesome.cropper.utils.CroppingUtils
 import com.awesome.cropper.utils.CroppingUtils.movingOffsetWhileTouching
 
 @Composable
 fun CroppingRectangle(
     aspectRatio: Float = 1f, //use it when we use Scale Fit
-    showGridLines: Boolean = true
+    showGridLines: Boolean = true,
+    onChange: (croppingRectSize: Size, croppingRectPosition: Offset, windowSize: Size) -> Unit
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(200f, 200f)) }
-    var croppingRectPosition by remember { mutableStateOf(Offset(100f, 100f)) }
+    var croppingRectPosition by remember { mutableStateOf(Offset(0f, 0f)) }
 
-    var isCroppingRectMoving by remember { mutableStateOf(false) }
-    val touchOffset by remember { mutableStateOf(Offset(0f, 0f)) }
     Canvas(
         modifier = Modifier
             .fillMaxSize()
             .aspectRatio(aspectRatio)
             .pointerInput(Unit) {
                 detectTransformGestures { _, pan, _, _ ->
-                    when {
-                        // Check if touch is within the cropping rectangle
-                        CroppingUtils.checkIfTouchInCroppingRectangle(touchOffset, croppingRectSize) -> {
-                            croppingRectPosition = movingOffsetWhileTouching(Size(size.width.toFloat() , size.height.toFloat()) ,croppingRectSize ,croppingRectPosition , pan )
-                            isCroppingRectMoving = true
-                        }
-                        // The user is not touching the cropping rectangle
-                        else -> isCroppingRectMoving = false
-                    }
+                    croppingRectPosition = movingOffsetWhileTouching(
+                        Size(
+                            size.width.toFloat(),
+                            size.height.toFloat()
+                        ), croppingRectSize, croppingRectPosition, pan
+                    )
                 }
             }
     ) {
+        croppingRectSize = size * 0.5f
+        onChange(
+            croppingRectSize,
+            croppingRectPosition,
+            size
+        )
         drawRect(
             color = Color.Transparent, // Make the inside transparent
             topLeft = croppingRectPosition,

@@ -24,10 +24,10 @@ actual class CroppingManager actual constructor() {
             val originalImage = image.toAwtImage()
             // Crop the BufferedImage
             val croppedImage = originalImage.getSubimage(
-                (cropPosition.x.toInt() * widthRatio ).toInt(),
-                (cropPosition.y.toInt() * heightRatio).toInt(),
-                (cropSize.width.toInt() * widthRatio).toInt(),
-                (cropSize.height.toInt() * heightRatio).toInt()
+                (cropPosition.x * widthRatio ).toInt(),
+                (cropPosition.y * heightRatio).toInt(),
+                (cropSize.width * widthRatio).toInt(),
+                (cropSize.height * heightRatio).toInt()
             )
 
             // Convert the cropped BufferedImage back to an ImageBitmap
