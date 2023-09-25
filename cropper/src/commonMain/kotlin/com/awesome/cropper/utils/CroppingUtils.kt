@@ -87,4 +87,15 @@ object CroppingUtils {
             croppingShapePosition.y * ratioY
         )
     }
+    fun calculateCroppingShapeSizeWhenWindowResized(
+        previousSize: Size,
+        newSize: Size,
+        croppingRectSize: Size
+    ): Size {
+        val widthRatio = newSize.width / previousSize.width
+        val heightRatio = newSize.height / previousSize.height
+        val newWidth = croppingRectSize.width * widthRatio
+        val newHeight = croppingRectSize.height * heightRatio
+        return Size(newWidth, newHeight)
+    }
 }
