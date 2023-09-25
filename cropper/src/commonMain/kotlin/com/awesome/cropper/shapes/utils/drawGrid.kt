@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 
-fun DrawScope.drawGrid(
+fun DrawScope.drawRectangleGrid(
     croppingShapeSize: Size,
     linesColor: Color,
     croppingRectPosition: Offset // The position of the cropping rectangle

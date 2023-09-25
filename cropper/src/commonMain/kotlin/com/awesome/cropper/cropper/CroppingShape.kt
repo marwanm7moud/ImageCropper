@@ -14,10 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.min
 import com.awesome.cropper.shapes.rectangleShape
 import com.awesome.cropper.utils.CroppingUtils.calculateCroppingShapePositionWhenWindowResized
 import com.awesome.cropper.utils.CroppingUtils.checkIfTouchInCroppingShape
 import com.awesome.cropper.utils.CroppingUtils.movingOffsetWhileTouching
+import kotlin.math.min
 
 @Composable
 fun CroppingShape(
@@ -25,7 +27,7 @@ fun CroppingShape(
     showGridLines: Boolean = true,
     onChange: (croppingRectSize: Size, croppingRectPosition: Offset, windowSize: Size) -> Unit
 ) {
-    var croppingRectSize by remember { mutableStateOf(Size(0f, 0f)) }
+    var croppingRectSize by remember { mutableStateOf(Size(50f, 50f)) }
     var croppingRectPosition by remember { mutableStateOf(Offset(20f, 20f)) }
     var isTouchingTheCroppingShape by remember { mutableStateOf(false) }
     var previousWindowSize by remember { mutableStateOf(Size(0f, 0f)) }
@@ -56,14 +58,15 @@ fun CroppingShape(
                 )
             }
     ) {
+        croppingRectSize = size*0.5f
         if (previousWindowSize == Size(0f, 0f)) previousWindowSize = size
         if (previousWindowSize != size) {
             croppingRectPosition =
                 calculateCroppingShapePositionWhenWindowResized(previousWindowSize , size , croppingRectPosition)
             previousWindowSize = size
+
         }
 
-        croppingRectSize = size * 0.5f
         onChange(
             croppingRectSize,
             croppingRectPosition,
