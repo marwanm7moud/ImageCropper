@@ -15,6 +15,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.input.pointer.pointerInput
 import com.awesome.cropper.shapes.rectangleShape
+import com.awesome.cropper.utils.CroppingUtils.calculateCroppingShapePositionWhenWindowResized
 import com.awesome.cropper.utils.CroppingUtils.checkIfTouchInCroppingShape
 import com.awesome.cropper.utils.CroppingUtils.movingOffsetWhileTouching
 
@@ -57,12 +58,8 @@ fun CroppingShape(
     ) {
         if (previousWindowSize == Size(0f, 0f)) previousWindowSize = size
         if (previousWindowSize != size) {
-            val ratioX = size.width / previousWindowSize.width
-            val ratioY = size.height / previousWindowSize.height
-            croppingRectPosition = Offset(
-                croppingRectPosition.x * ratioX,
-                croppingRectPosition.y * ratioY
-            )
+            croppingRectPosition =
+                calculateCroppingShapePositionWhenWindowResized(previousWindowSize , size , croppingRectPosition)
             previousWindowSize = size
         }
 

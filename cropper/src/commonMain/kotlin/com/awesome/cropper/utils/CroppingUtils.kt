@@ -20,7 +20,7 @@ object CroppingUtils {
                 touchOffset.y >= y && touchOffset.y <= y + croppingRectSize.height
     }
 
-    fun PointerInputScope.movingOffsetWhileTouching(
+    fun movingOffsetWhileTouching(
         imageSize: Size,
         croppingRectSize: Size,
         croppingRectPosition: Offset,
@@ -72,6 +72,19 @@ object CroppingUtils {
             ),
             cropSize = Size(size.width * widthRatio, size.height * heightRatio),
             windowSize = windowSize,
+        )
+    }
+
+    fun calculateCroppingShapePositionWhenWindowResized(
+        previousWindowSize: Size,
+        windowSize: Size,
+        croppingShapePosition: Offset
+    ): Offset {
+        val ratioX = windowSize.width / previousWindowSize.width
+        val ratioY = windowSize.height / previousWindowSize.height
+        return Offset(
+            croppingShapePosition.x * ratioX,
+            croppingShapePosition.y * ratioY
         )
     }
 }
