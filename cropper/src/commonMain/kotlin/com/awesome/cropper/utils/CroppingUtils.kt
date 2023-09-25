@@ -48,21 +48,21 @@ object CroppingUtils {
         // Calculate the cropping rectangle position in pixels
         val position = density.run {
             Offset(
-                croppingRectPosition.x.dp.roundToPx().toFloat(),
-                croppingRectPosition.y.dp.roundToPx().toFloat()
+                croppingRectPosition.x.dp.toPx(),
+                croppingRectPosition.y.dp.toPx()
             )
         }
         // Calculate the cropping rectangle dimensions in pixels
         val size = density.run {
             Size(
-                croppingRectSize.width.dp.roundToPx().toFloat(),
-                croppingRectSize.height.dp.roundToPx().toFloat()
+                croppingRectSize.width.dp.toPx(),
+                croppingRectSize.height.dp.toPx()
             )
         }
 
         // Calculate width and height ratios
-        val widthRatio = image.width.toFloat() / windowSize.width.toFloat()
-        val heightRatio = image.height.toFloat() / windowSize.height.toFloat()
+        val widthRatio = image.width / windowSize.width
+        val heightRatio = image.height / windowSize.height
 
         return CroppingManager().cropImageByImageBitmap(
             image,
