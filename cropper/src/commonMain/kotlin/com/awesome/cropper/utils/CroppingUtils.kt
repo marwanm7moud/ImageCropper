@@ -1,6 +1,7 @@
 package com.awesome.cropper.utils
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.pointer.PointerInputScope
@@ -97,5 +98,46 @@ object CroppingUtils {
         val newWidth = croppingRectSize.width * widthRatio
         val newHeight = croppingRectSize.height * heightRatio
         return Size(newWidth, newHeight)
+    }
+    // Function to detect which side is being touched
+    fun detectTouchedSide(
+        touchX: Float,
+        touchY: Float,
+        rectSize: Size,
+        strokeWidth: Float
+    ): TouchedSide {
+        val sides = calculateSidesSizes(rectSize, strokeWidth)
+        val sideThreshold = strokeWidth // Use the stroke width as the threshold
+
+        // Check if the touch is within the threshold of the left side
+        if (touchX >= sides.left - sideThreshold && touchX <= sides.left + sideThreshold) {
+            return TouchedSide.LEFT
+        }
+
+        // Check if the touch is within the threshold of the right side
+        if (touchX >= sides.right - sideThreshold && touchX <= sides.right + sideThreshold) {
+            return TouchedSide.RIGHT
+        }
+
+        // Check if the touch is within the threshold of the top side
+        if (touchY >= sides.top - sideThreshold && touchY <= sides.top + sideThreshold) {
+            return TouchedSide.TOP
+        }
+
+        // Check if the touch is within the threshold of the bottom side
+        if (touchY >= sides.bottom - sideThreshold && touchY <= sides.bottom + sideThreshold) {
+            return TouchedSide.BOTTOM
+        }
+
+        return TouchedSide.NONE
+    }
+    private fun calculateSidesSizes(rectSize: Size, strokeWidth: Float): Rect {
+        val halfStroke = strokeWidth / 2f
+        val left = halfStroke
+        val top = halfStroke
+        val right = rectSize.width - halfStroke
+        val bottom = rectSize.height - halfStroke
+
+        return Rect(left, top, right, bottom)
     }
 }

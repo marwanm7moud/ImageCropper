@@ -11,6 +11,7 @@ import com.awesome.cropper.shapes.utils.drawRectangleGrid
 fun DrawScope.rectangleShape(
     croppingRectPosition: Offset,
     croppingRectSize: Size,
+    croppingShapeStrokeWidth:Float,
     showGridLines: Boolean,
     cornersLength: Float = 10f,
     cornersWidth: Float = 4f
@@ -24,7 +25,7 @@ fun DrawScope.rectangleShape(
         color = Color.White, // Add a white border
         topLeft = croppingRectPosition,
         size = Size(croppingRectSize.width, croppingRectSize.height),
-        style = Stroke(2f) // Adjust the border width as needed
+        style = Stroke(croppingShapeStrokeWidth) // Adjust the border width as needed
     )
     drawRectangleCorners(
         croppingRectSize = croppingRectSize,
