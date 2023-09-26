@@ -32,12 +32,12 @@ import kotlin.math.min
 @Composable
 fun CroppingShape(
     aspectRatio: Float = 1f,
-    croppingShapeStrokeWidth: Float = 10f,
+    croppingShapeStrokeWidth: Float = 2f,
     showGridLines: Boolean = true,
     onChange: (croppingRectSize: Size, croppingRectPosition: Offset, windowSize: Size) -> Unit
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(200f, 200f)) }
-    var croppingRectPosition by remember { mutableStateOf(Offset(20f, 20f)) }
+    var croppingRectPosition by remember { mutableStateOf(Offset(0f, 0f)) }
     var isTouchingTheCroppingShape by remember { mutableStateOf(false) }
     var previousWindowSize by remember { mutableStateOf(Size(0f, 0f)) }
 
