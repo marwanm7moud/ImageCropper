@@ -19,19 +19,20 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.min
+import androidx.compose.ui.unit.toSize
 import com.awesome.cropper.shapes.rectangleShape
 import com.awesome.cropper.utils.CroppingUtils.calculateCroppingShapePositionWhenWindowResized
 import com.awesome.cropper.utils.CroppingUtils.calculateCroppingShapeSizeWhenWindowResized
 import com.awesome.cropper.utils.CroppingUtils.checkIfTouchInCroppingShape
 import com.awesome.cropper.utils.CroppingUtils.detectTouchedSide
-import com.awesome.cropper.utils.CroppingUtils.movingOffsetWhileTouching
+import com.awesome.cropper.utils.CroppingUtils.resizeShapeWhenDrag
 import com.awesome.cropper.utils.TouchedSide
 import kotlin.math.min
 
 @Composable
 fun CroppingShape(
     aspectRatio: Float = 1f,
-    croppingShapeStrokeWidth:Float = 2f,
+    croppingShapeStrokeWidth: Float = 10f,
     showGridLines: Boolean = true,
     onChange: (croppingRectSize: Size, croppingRectPosition: Offset, windowSize: Size) -> Unit
 ) {
@@ -49,13 +50,16 @@ fun CroppingShape(
             .pointerInput(Unit) {
                 detectTransformGestures { _, pan, _, _ ->
                     if (isTouchingTheCroppingShape) {
-                        val newCroppingRectPosition = movingOffsetWhileTouching(
-                            Size(
-                                size.width.toFloat(),
-                                size.height.toFloat()
-                            ), croppingRectSize, croppingRectPosition, pan
+                        val resizedArgs = resizeShapeWhenDrag(
+                            touchedSide,
+                            croppingRectSize,
+                            croppingRectPosition,
+                            croppingShapeStrokeWidth,
+                            size.toSize(),
+                            pan
                         )
-                        croppingRectPosition = newCroppingRectPosition
+                        croppingRectSize = resizedArgs.first
+                        croppingRectPosition = resizedArgs.second
                     }
                 }
             }
@@ -68,10 +72,15 @@ fun CroppingShape(
                         // Determine which side is touched based on the touch point
                         val touchX = it.x - croppingRectPosition.x
                         val touchY = it.y - croppingRectPosition.y
-                        touchedSide = detectTouchedSide(touchX, touchY, croppingRectSize , croppingShapeStrokeWidth)
-
+                        touchedSide = detectTouchedSide(
+                            touchX,
+                            touchY,
+                            croppingRectSize,
+                            croppingShapeStrokeWidth
+                        )
                         println(touchedSide)
-
+                        awaitRelease()
+                        touchedSide = TouchedSide.NONE
                     }
                 )
             }
@@ -79,13 +88,20 @@ fun CroppingShape(
         if (previousWindowSize == Size(0f, 0f)) previousWindowSize = size
         if (previousWindowSize != size) {
             croppingRectSize =
-                calculateCroppingShapeSizeWhenWindowResized(previousWindowSize , size , croppingRectSize)
+                calculateCroppingShapeSizeWhenWindowResized(
+                    previousWindowSize,
+                    size,
+                    croppingRectSize
+                )
             croppingRectPosition =
-                calculateCroppingShapePositionWhenWindowResized(previousWindowSize , size , croppingRectPosition)
+                calculateCroppingShapePositionWhenWindowResized(
+                    previousWindowSize,
+                    size,
+                    croppingRectPosition
+                )
             previousWindowSize = size
 
         }
-
         onChange(
             croppingRectSize,
             croppingRectPosition,

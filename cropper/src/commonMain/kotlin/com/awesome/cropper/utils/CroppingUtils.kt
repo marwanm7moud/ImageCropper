@@ -4,7 +4,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.awesome.cropper.CroppingManager
@@ -21,7 +20,7 @@ object CroppingUtils {
                 touchOffset.y >= y && touchOffset.y <= y + croppingRectSize.height
     }
 
-    fun movingOffsetWhileTouching(
+    private fun movingOffsetWhileTouching(
         imageSize: Size,
         croppingRectSize: Size,
         croppingRectPosition: Offset,
@@ -88,6 +87,7 @@ object CroppingUtils {
             croppingShapePosition.y * ratioY
         )
     }
+
     fun calculateCroppingShapeSizeWhenWindowResized(
         previousSize: Size,
         newSize: Size,
@@ -99,6 +99,7 @@ object CroppingUtils {
         val newHeight = croppingRectSize.height * heightRatio
         return Size(newWidth, newHeight)
     }
+
     // Function to detect which side is being touched
     fun detectTouchedSide(
         touchX: Float,
@@ -131,6 +132,7 @@ object CroppingUtils {
 
         return TouchedSide.NONE
     }
+
     private fun calculateSidesSizes(rectSize: Size, strokeWidth: Float): Rect {
         val halfStroke = strokeWidth / 2f
         val left = halfStroke
@@ -139,5 +141,81 @@ object CroppingUtils {
         val bottom = rectSize.height - halfStroke
 
         return Rect(left, top, right, bottom)
+    }
+
+    fun resizeShapeWhenDrag(
+        touchedSide: TouchedSide,
+        croppingShapeSize: Size,
+        croppingShapePosition: Offset,
+        croppingShapeStrokeWidth: Float,
+        windowSize: Size,
+        pan: Offset
+    ): Pair<Size, Offset> {
+        return when (touchedSide) {
+            TouchedSide.LEFT -> {
+                val newWidth = croppingShapeSize.width - pan.x
+                val maxX = windowSize.width // Adjust with stroke width
+                val newCroppingRectPositionX = croppingShapePosition.x + pan.x
+
+                if (newWidth > croppingShapeStrokeWidth &&
+                    newCroppingRectPositionX >= 0 &&
+                    newCroppingRectPositionX + newWidth <= maxX
+                ) {
+                    return Pair(
+                        Size(newWidth, croppingShapeSize.height),
+                        Offset(newCroppingRectPositionX, croppingShapePosition.y)
+                    )
+                }
+                return Pair(croppingShapeSize, croppingShapePosition)
+            }
+
+            TouchedSide.RIGHT -> {
+                val newWidth = croppingShapeSize.width + pan.x
+                val maxX = windowSize.width // Adjust with stroke width
+
+                if (newWidth > croppingShapeStrokeWidth && croppingShapePosition.x + newWidth <= maxX) {
+                    return Pair(Size(newWidth, croppingShapeSize.height), croppingShapePosition)
+                }
+                return Pair(croppingShapeSize, croppingShapePosition)
+            }
+
+            TouchedSide.TOP -> {
+                val newHeight = croppingShapeSize.height - pan.y
+                val maxY = windowSize.height // Adjust with stroke width
+                val newCroppingRectPositionY = croppingShapePosition.y + pan.y
+
+                if (newHeight > croppingShapeStrokeWidth &&
+                    newCroppingRectPositionY >= 0 &&
+                    newCroppingRectPositionY + newHeight <= maxY
+                ) {
+                    return Pair(
+                        Size(croppingShapeSize.width, newHeight),
+                        Offset(croppingShapePosition.x, newCroppingRectPositionY)
+                    )
+                }
+                return Pair(croppingShapeSize, croppingShapePosition)
+            }
+
+            TouchedSide.BOTTOM -> {
+                val newHeight = croppingShapeSize.height + pan.y
+                val maxY = windowSize.height // Adjust with stroke width
+
+                if (newHeight > croppingShapeStrokeWidth && croppingShapePosition.y + newHeight <= maxY) {
+                    return Pair(Size(croppingShapeSize.width, newHeight), croppingShapePosition)
+                }
+                return Pair(croppingShapeSize, croppingShapePosition)
+            }
+
+            else -> {
+                return Pair(
+                    croppingShapeSize, movingOffsetWhileTouching(
+                        Size(
+                            windowSize.width,
+                            windowSize.height
+                        ), croppingShapeSize, croppingShapePosition, pan
+                    )
+                )
+            }
+        }
     }
 }
