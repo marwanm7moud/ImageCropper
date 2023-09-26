@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 fun DrawScope.drawRectangleGrid(
     croppingShapeSize: Size,
     linesColor: Color,
+    strokeWidth:Float,
     croppingRectPosition: Offset // The position of the cropping rectangle
 ) {
     // Draw horizontal lines
@@ -20,7 +21,7 @@ fun DrawScope.drawRectangleGrid(
             color = linesColor,
             start = Offset(croppingRectPosition.x, y),
             end = Offset(croppingRectPosition.x + croppingShapeSize.width, y),
-            strokeWidth = 1f
+            strokeWidth = strokeWidth
         )
     }
 
@@ -31,7 +32,7 @@ fun DrawScope.drawRectangleGrid(
             color = linesColor,
             start = Offset(x, croppingRectPosition.y),
             end = Offset(x, croppingRectPosition.y + croppingShapeSize.height),
-            strokeWidth = 1f
+            strokeWidth = strokeWidth
         )
     }
 }
