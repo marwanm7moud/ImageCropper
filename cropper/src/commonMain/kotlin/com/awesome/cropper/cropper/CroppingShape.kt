@@ -33,6 +33,7 @@ fun CroppingShape(
     gridStrokeWidth: Float = 2f,
     gridStrokeColor: Color = Color.White,
     showGridLines: Boolean = true,
+    backGroundAlpha:Float = 0.7f,
     onChangeWindowSize: (croppingRectSize: Size, croppingRectPosition: Offset, windowSize: Size) -> Unit
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(200f, 200f)) }
@@ -113,7 +114,8 @@ fun CroppingShape(
             croppingShapeStrokeColor = croppingShapeStrokeColor,
             showGridLines = showGridLines,
             gridStrokeWidth = gridStrokeWidth,
-            gridStrokeColor = gridStrokeColor
+            gridStrokeColor = gridStrokeColor,
+            backGroundAlpha = backGroundAlpha
         )
     }
 }

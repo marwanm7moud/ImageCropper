@@ -23,27 +23,27 @@ import com.awesome.cropper.utils.CroppingUtils.cropAndShowImage
 
 @Composable
 fun ImageCropper(
-    imagePath: String
+    imagePath: String,
 ) {
     val image = getImageByFilePath(imagePath)
-    var croppingRectSize by remember { mutableStateOf(Size(200f, 200f)) }
+    var croppingRectSize by remember { mutableStateOf(Size(1f, 1f)) }
     var croppingRectPosition by remember { mutableStateOf(Offset(0f, 0f)) }
     var windowSize by remember { mutableStateOf(Size(0f, 0f)) }
     val density = LocalDensity.current
 
     Box(
-        modifier = Modifier.fillMaxSize().background(Color.Red),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize()//.background(Color.Red),
+        ,contentAlignment = Alignment.Center
     ) {
         if (image != null) {
             Image(
                 bitmap = image,
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize().aspectRatio(image.width / image.height.toFloat()),
-                contentScale = ContentScale.Fit
+                modifier = Modifier.fillMaxSize().aspectRatio(image.width / image.height.toFloat())
+                ,contentScale = ContentScale.Fit
             )
-            CroppingRectangle(
-                aspectRatio = (image.width / image.height.toFloat())
+            CroppingShape(
+                aspectRatio = (image.width.toFloat() / image.height.toFloat())
             ) { size, offset, window ->
                 croppingRectSize = size
                 croppingRectPosition = offset
@@ -55,6 +55,32 @@ fun ImageCropper(
                 }
             }
         }
+    }
+
+    var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
+
+    Button(
+        onClick = {
+            croppedImage = cropAndShowImage(
+                image!!,
+                croppingRectSize,
+                croppingRectPosition, windowSize, density
+            )
+        },
+        modifier = Modifier
+            .padding(16.dp)
+    ) {
+        Text("Crop Image")
+    }
+
+    // Display the cropped image if available
+    croppedImage?.let { cropped ->
+        Image(
+            bitmap = cropped,
+            contentDescription = null,
+            modifier = Modifier
+                .size(200.dp, 200.dp) // Adjust the size as needed
+        )
     }
 
 }

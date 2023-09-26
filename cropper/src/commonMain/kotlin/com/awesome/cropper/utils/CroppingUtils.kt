@@ -134,7 +134,7 @@ object CroppingUtils {
 
 
 
-    fun calculateSidesSizes(rectSize: Size, strokeWidth: Float): Rect {
+    private fun calculateSidesSizes(rectSize: Size, strokeWidth: Float): Rect {
         val left = -strokeWidth / 2f
         val top = -strokeWidth / 2f
         val right = rectSize.width + strokeWidth / 2f
