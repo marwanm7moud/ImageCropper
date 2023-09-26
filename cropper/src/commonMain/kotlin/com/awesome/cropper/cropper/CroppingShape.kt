@@ -28,7 +28,7 @@ import com.awesome.cropper.utils.TouchedSide
 @Composable
 fun CroppingShape(
     aspectRatio: Float = 1f,
-    croppingShapeStrokeWidth: Float = 10f,
+    croppingShapeStrokeWidth: Float = 5f,
     croppingShapeStrokeColor: Color = Color.White,
     gridStrokeWidth: Float = 2f,
     gridStrokeColor: Color = Color.White,
