@@ -79,7 +79,6 @@ internal fun CroppingShape(
                             croppingRectSize,
                             croppingShapeStrokeWidth
                         )
-                        println(touchedSide)
                         awaitRelease()
                         touchedSide = TouchedSide.NONE
                     }

@@ -55,14 +55,15 @@ internal object CroppingUtils {
         // Calculate the cropping rectangle dimensions in pixels
         val size = density.run {
             Size(
-                croppingRectSize.width.dp.toPx(),
-                croppingRectSize.height.dp.toPx()
+                croppingRectSize.width.dp.roundToPx().toFloat(),
+                croppingRectSize.height.dp.roundToPx().toFloat()
             )
         }
 
         // Calculate width and height ratios
         val widthRatio = image.width / windowSize.width
         val heightRatio = image.height / windowSize.height
+        println(": ${ Size(size.width * widthRatio, size.height * heightRatio) }"  )
 
         return CroppingManager().cropImageByImageBitmap(
             image,
