@@ -60,7 +60,6 @@ kotlin {
                 implementation(libs.androidx.appcompat)
                 implementation(libs.androidx.activityCompose)
                 implementation(libs.compose.uitooling)
-                implementation("io.ktor:ktor-client-android:$ktor_version")
             }
         }
 
@@ -68,13 +67,11 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.common)
                 implementation(compose.desktop.currentOs)
-                implementation("io.ktor:ktor-client-android:$ktor_version")
             }
         }
 
         val iosMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-darwin:$ktor_version")
             }
         }
 
