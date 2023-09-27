@@ -19,11 +19,21 @@ import androidx.compose.ui.unit.Density
 import com.awesome.cropper.CroppingManager
 import com.awesome.cropper.getImageByFilePath
 import com.awesome.cropper.utils.CroppingUtils.cropAndShowImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 
 
 @Composable
 fun ImageCropper(
     imagePath: String,
+    onCropStart: () -> Unit,
+    onCropSuccess: (ImageBitmap) -> Unit,
+    crop: Boolean = false,
 ) {
     val image = getImageByFilePath(imagePath)
     var croppingRectSize by remember { mutableStateOf(Size(1f, 1f)) }
@@ -33,15 +43,25 @@ fun ImageCropper(
 
     Box(
         modifier = Modifier.fillMaxSize()//.background(Color.Red),
-        ,contentAlignment = Alignment.Center
+        , contentAlignment = Alignment.Center
     ) {
         if (image != null) {
             Image(
                 bitmap = image,
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize().aspectRatio(image.width / image.height.toFloat())
-                ,contentScale = ContentScale.Fit
+                modifier = Modifier.fillMaxSize().aspectRatio(image.width / image.height.toFloat()),
+                contentScale = ContentScale.Fit
             )
+            if(crop) {
+                Crop(
+                    image,
+                    croppingRectSize,
+                    windowSize,
+                    croppingRectPosition,
+                    density,
+                    crop, onCropStart, onCropSuccess
+                )
+            }
             CroppingShape(
                 aspectRatio = (image.width.toFloat() / image.height.toFloat())
             ) { size, offset, window ->
@@ -56,31 +76,39 @@ fun ImageCropper(
             }
         }
     }
+}
 
-    var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
-
-    Button(
-        onClick = {
-            croppedImage = cropAndShowImage(
-                image!!,
-                croppingRectSize,
-                croppingRectPosition, windowSize, density
-            )
-        },
-        modifier = Modifier
-            .padding(16.dp)
-    ) {
-        Text("Crop Image")
+@Composable
+private fun Crop(
+    image: ImageBitmap,
+    croppingShapeSize: Size,
+    windowSize: Size,
+    croppingShapePosition: Offset,
+    density: Density,
+    crop: Boolean,
+    onCropStart: () -> Unit,
+    onCropSuccess: (ImageBitmap) -> Unit,
+) {
+    LaunchedEffect(crop) {
+        if (crop) {
+            flow {
+                val croppedImageBitmap = cropAndShowImage(
+                    image,
+                    croppingShapeSize,
+                    croppingShapePosition,
+                    windowSize, density
+                )
+                emit(croppedImageBitmap)
+            }
+                .flowOn(Dispatchers.Default)
+                .onStart {
+                    onCropStart()
+                    delay(400)
+                }
+                .onEach {
+                    onCropSuccess(it)
+                }
+                .launchIn(this)
+        }
     }
-
-    // Display the cropped image if available
-    croppedImage?.let { cropped ->
-        Image(
-            bitmap = cropped,
-            contentDescription = null,
-            modifier = Modifier
-                .size(200.dp, 200.dp) // Adjust the size as needed
-        )
-    }
-
 }
