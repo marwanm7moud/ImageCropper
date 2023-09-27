@@ -36,10 +36,10 @@ internal fun CroppingShape(
     backGroundAlpha:Float = 0.7f,
     onChangeWindowSize: (croppingRectSize: Size, croppingRectPosition: Offset, windowSize: Size) -> Unit
 ) {
-    var croppingRectSize by remember { mutableStateOf(Size(200f, 200f)) }
+    var croppingRectSize by remember { mutableStateOf(Size(-1f, -1f)) }
     var croppingRectPosition by remember { mutableStateOf(Offset(0f, 0f)) }
     var isTouchingTheCroppingShape by remember { mutableStateOf(false) }
-    var previousWindowSize by remember { mutableStateOf(Size(0f, 0f)) }
+    var previousWindowSize by remember { mutableStateOf(Size(-1f, -1f)) }
 
     var touchedSide by remember { mutableStateOf(TouchedSide.NONE) }
 
@@ -85,7 +85,8 @@ internal fun CroppingShape(
                 )
             }
     ) {
-        if (previousWindowSize == Size(0f, 0f)) previousWindowSize = size
+        if (previousWindowSize == Size(-1f, -1f)) previousWindowSize = size
+        if (croppingRectSize == Size(-1f, -1f)) croppingRectSize = size
         if (previousWindowSize != size) {
             croppingRectSize =
                 calculateCroppingShapeSizeWhenWindowResized(

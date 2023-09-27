@@ -34,6 +34,7 @@ fun ImageCropper(
     onCropStart: () -> Unit,
     onCropSuccess: (ImageBitmap) -> Unit,
     crop: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val image = getImageByFilePath(imagePath)
     var croppingRectSize by remember { mutableStateOf(Size(1f, 1f)) }
@@ -42,8 +43,8 @@ fun ImageCropper(
     val density = LocalDensity.current
 
     Box(
-        modifier = Modifier.fillMaxSize()//.background(Color.Red),
-        , contentAlignment = Alignment.Center
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
         if (image != null) {
             Image(
@@ -84,6 +85,7 @@ fun ImageCropper(
     onCropStart: () -> Unit,
     onCropSuccess: (ImageBitmap) -> Unit,
     crop: Boolean = false,
+    modifier: Modifier = Modifier
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(1f, 1f)) }
     var croppingRectPosition by remember { mutableStateOf(Offset(0f, 0f)) }
@@ -91,8 +93,8 @@ fun ImageCropper(
     val density = LocalDensity.current
 
     Box(
-        modifier = Modifier.fillMaxSize()//.background(Color.Red),
-        , contentAlignment = Alignment.Center
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
         Image(
             bitmap = image,
@@ -135,7 +137,8 @@ private fun Crop(
     crop: Boolean,
     onCropStart: () -> Unit,
     onCropSuccess: (ImageBitmap) -> Unit,
-) {
+
+    ) {
     LaunchedEffect(crop) {
         if (crop) {
             flow {
