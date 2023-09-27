@@ -33,7 +33,7 @@ fun ImageCropper(
     imagePath: String,
     onCropStart: () -> Unit,
     onCropSuccess: (ImageBitmap) -> Unit,
-    croppingShapeStrokeWidth: Float = 6f,
+    croppingShapeStrokeWidth: Float = 2f,
     croppingShapeStrokeColor: Color = Color.White,
     gridStrokeWidth: Float = 1f,
     gridStrokeColor: Color = Color.White,
