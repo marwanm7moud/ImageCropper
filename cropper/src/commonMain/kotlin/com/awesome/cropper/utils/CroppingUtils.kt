@@ -107,25 +107,26 @@ internal object CroppingUtils {
         rectSize: Size,
         strokeWidth: Float
     ): TouchedSide {
-        val sides = calculateSidesSizes(rectSize, strokeWidth)
+        val modifiedStrokeWidth= if (strokeWidth < 3) 4f else  strokeWidth +2f
+        val sides = calculateSidesSizes(rectSize, modifiedStrokeWidth)
 
         // Check if the touch is within the threshold of the left side
-        if (touchX >= sides.left && touchX <= sides.left + strokeWidth) {
+        if (touchX >= sides.left && touchX <= sides.left + modifiedStrokeWidth) {
             return TouchedSide.LEFT
         }
 
         // Check if the touch is within the threshold of the right side
-        if (touchX >= sides.right - strokeWidth && touchX <= sides.right) {
+        if (touchX >= sides.right - modifiedStrokeWidth && touchX <= sides.right) {
             return TouchedSide.RIGHT
         }
 
         // Check if the touch is within the threshold of the top side
-        if (touchY >= sides.top && touchY <= sides.top + strokeWidth) {
+        if (touchY >= sides.top && touchY <= sides.top + modifiedStrokeWidth) {
             return TouchedSide.TOP
         }
 
         // Check if the touch is within the threshold of the bottom side
-        if (touchY >= sides.bottom - strokeWidth && touchY <= sides.bottom) {
+        if (touchY >= sides.bottom - modifiedStrokeWidth && touchY <= sides.bottom) {
             return TouchedSide.BOTTOM
         }
 

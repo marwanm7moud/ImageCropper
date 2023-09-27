@@ -35,12 +35,14 @@ internal fun DrawScope.rectangleShape(
         topLeft = croppingShapePosition,
         size = Size(croppingShapeSize.width, croppingShapeSize.height)
     )
-    drawRect(
-        color = croppingShapeStrokeColor, // Add a white border
-        topLeft = croppingShapePosition,
-        size = Size(croppingShapeSize.width, croppingShapeSize.height),
-        style = Stroke(croppingShapeStrokeWidth) // Adjust the border width as needed
-    )
+    if (croppingShapeStrokeWidth > 0) {
+        drawRect(
+            color = croppingShapeStrokeColor, // Add a white border
+            topLeft = croppingShapePosition,
+            size = Size(croppingShapeSize.width, croppingShapeSize.height),
+            style = Stroke(croppingShapeStrokeWidth) // Adjust the border width as needed
+        )
+    }
 
     if (showGridLines)
         drawRectangleGrid(

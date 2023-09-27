@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.toSize
 import com.awesome.cropper.shapes.rectangleShape
+import com.awesome.cropper.utils.CroppingUtils
 import com.awesome.cropper.utils.CroppingUtils.calculateCroppingShapePositionWhenWindowResized
 import com.awesome.cropper.utils.CroppingUtils.calculateCroppingShapeSizeWhenWindowResized
 import com.awesome.cropper.utils.CroppingUtils.checkIfTouchInCroppingShape
