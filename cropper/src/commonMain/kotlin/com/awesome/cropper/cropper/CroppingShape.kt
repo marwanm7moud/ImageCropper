@@ -27,13 +27,13 @@ import com.awesome.cropper.utils.TouchedSide
 
 @Composable
 internal fun CroppingShape(
-    aspectRatio: Float = 1f,
-    croppingShapeStrokeWidth: Float = 5f,
-    croppingShapeStrokeColor: Color = Color.White,
-    gridStrokeWidth: Float = 2f,
-    gridStrokeColor: Color = Color.White,
-    showGridLines: Boolean = true,
-    backGroundAlpha:Float = 0.7f,
+    aspectRatio: Float,
+    croppingShapeStrokeWidth: Float,
+    croppingShapeStrokeColor: Color,
+    gridStrokeWidth: Float,
+    gridStrokeColor: Color,
+    showGridLines: Boolean,
+    backGroundAlpha:Float,
     onChangeWindowSize: (croppingRectSize: Size, croppingRectPosition: Offset, windowSize: Size) -> Unit
 ) {
     var croppingRectSize by remember { mutableStateOf(Size(-1f, -1f)) }

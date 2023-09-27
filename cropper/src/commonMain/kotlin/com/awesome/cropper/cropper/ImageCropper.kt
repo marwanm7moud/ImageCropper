@@ -33,6 +33,12 @@ fun ImageCropper(
     imagePath: String,
     onCropStart: () -> Unit,
     onCropSuccess: (ImageBitmap) -> Unit,
+    croppingShapeStrokeWidth: Float = 2f,
+    croppingShapeStrokeColor: Color = Color.White,
+    gridStrokeWidth: Float = 1f,
+    gridStrokeColor: Color = Color.White,
+    showGridLines: Boolean = true,
+    backGroundAlpha:Float = 0.7f,
     crop: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
@@ -64,6 +70,12 @@ fun ImageCropper(
                 )
             }
             CroppingShape(
+                croppingShapeStrokeWidth = croppingShapeStrokeWidth,
+                croppingShapeStrokeColor = croppingShapeStrokeColor,
+                gridStrokeWidth = gridStrokeWidth,
+                gridStrokeColor = gridStrokeColor,
+                showGridLines = showGridLines,
+                backGroundAlpha = backGroundAlpha,
                 aspectRatio = (image.width.toFloat() / image.height.toFloat())
             ) { size, offset, window ->
                 croppingRectSize = size
@@ -84,6 +96,12 @@ fun ImageCropper(
     image: ImageBitmap,
     onCropStart: () -> Unit,
     onCropSuccess: (ImageBitmap) -> Unit,
+    croppingShapeStrokeWidth: Float = 2f,
+    croppingShapeStrokeColor: Color = Color.White,
+    gridStrokeWidth: Float = 1f,
+    gridStrokeColor: Color = Color.White,
+    showGridLines: Boolean = true,
+    backGroundAlpha:Float = 0.7f,
     crop: Boolean = false,
     modifier: Modifier = Modifier
 ) {
@@ -113,6 +131,12 @@ fun ImageCropper(
             )
         }
         CroppingShape(
+            croppingShapeStrokeWidth = croppingShapeStrokeWidth,
+            croppingShapeStrokeColor = croppingShapeStrokeColor,
+            gridStrokeWidth = gridStrokeWidth,
+            gridStrokeColor = gridStrokeColor,
+            showGridLines = showGridLines,
+            backGroundAlpha = backGroundAlpha,
             aspectRatio = (image.width.toFloat() / image.height.toFloat())
         ) { size, offset, window ->
             croppingRectSize = size
