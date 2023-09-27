@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.awesome.cropper.CroppingManager
 
-object CroppingUtils {
+internal object CroppingUtils {
     fun checkIfTouchInCroppingShape(
         touchOffset: Offset,
         croppingRectSize: Size,

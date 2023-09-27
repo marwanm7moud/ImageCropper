@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import java.io.ByteArrayOutputStream
 
-actual class CroppingManager actual constructor() {
+internal actual class CroppingManager actual constructor() {
     actual fun cropImageByImageBitmap(
         image: ImageBitmap,
         cropPosition: Offset,

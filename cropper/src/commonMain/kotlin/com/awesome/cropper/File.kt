@@ -5,4 +5,4 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
 
 @Composable
-expect fun getImageByFilePath(filePath:String): ImageBitmap?
+internal expect fun getImageByFilePath(filePath:String): ImageBitmap?

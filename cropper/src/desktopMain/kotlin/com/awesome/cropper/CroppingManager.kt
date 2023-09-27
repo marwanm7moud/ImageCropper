@@ -9,7 +9,7 @@ import org.jetbrains.skiko.toImage
 import java.awt.Image
 import java.io.IOException
 
-actual class CroppingManager actual constructor() {
+internal actual class CroppingManager actual constructor() {
     actual fun cropImageByImageBitmap(
         image: ImageBitmap,
         cropPosition: Offset,

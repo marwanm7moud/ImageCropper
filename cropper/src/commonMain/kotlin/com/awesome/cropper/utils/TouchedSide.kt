@@ -1,5 +1,5 @@
 package com.awesome.cropper.utils
 
-enum class TouchedSide {
+internal enum class TouchedSide {
     NONE, LEFT, RIGHT, TOP, BOTTOM
 }

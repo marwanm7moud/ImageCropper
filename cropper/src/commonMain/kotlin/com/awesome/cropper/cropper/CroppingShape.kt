@@ -26,7 +26,7 @@ import com.awesome.cropper.utils.CroppingUtils.resizeShapeWhenDrag
 import com.awesome.cropper.utils.TouchedSide
 
 @Composable
-fun CroppingShape(
+internal fun CroppingShape(
     aspectRatio: Float = 1f,
     croppingShapeStrokeWidth: Float = 5f,
     croppingShapeStrokeColor: Color = Color.White,

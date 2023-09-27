@@ -9,7 +9,7 @@ import platform.CoreGraphics.CGRect
 import platform.CoreGraphics.CGSizeMake
 import platform.CoreGraphics.CGImage
 
-actual class CroppingManager actual constructor() {
+internal actual class CroppingManager actual constructor() {
     actual fun cropImageByImageBitmap(
         image: ImageBitmap,
         cropPosition:Offset,

@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
 import com.awesome.cropper.shapes.utils.drawRectangleGrid
 
-fun DrawScope.rectangleShape(
+internal fun DrawScope.rectangleShape(
     croppingShapePosition: Offset,
     croppingShapeSize: Size,
     croppingShapeStrokeWidth: Float,
