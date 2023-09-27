@@ -52,7 +52,7 @@ fun ImageCropper(
                 modifier = Modifier.fillMaxSize().aspectRatio(image.width / image.height.toFloat()),
                 contentScale = ContentScale.Fit
             )
-            if(crop) {
+            if (crop) {
                 Crop(
                     image,
                     croppingRectSize,
@@ -73,6 +73,53 @@ fun ImageCropper(
                         window.height.dp.roundToPx().toFloat()
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun ImageCropper(
+    image: ImageBitmap,
+    onCropStart: () -> Unit,
+    onCropSuccess: (ImageBitmap) -> Unit,
+    crop: Boolean = false,
+) {
+    var croppingRectSize by remember { mutableStateOf(Size(1f, 1f)) }
+    var croppingRectPosition by remember { mutableStateOf(Offset(0f, 0f)) }
+    var windowSize by remember { mutableStateOf(Size(0f, 0f)) }
+    val density = LocalDensity.current
+
+    Box(
+        modifier = Modifier.fillMaxSize()//.background(Color.Red),
+        , contentAlignment = Alignment.Center
+    ) {
+        Image(
+            bitmap = image,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize().aspectRatio(image.width / image.height.toFloat()),
+            contentScale = ContentScale.Fit
+        )
+        if (crop) {
+            Crop(
+                image,
+                croppingRectSize,
+                windowSize,
+                croppingRectPosition,
+                density,
+                crop, onCropStart, onCropSuccess
+            )
+        }
+        CroppingShape(
+            aspectRatio = (image.width.toFloat() / image.height.toFloat())
+        ) { size, offset, window ->
+            croppingRectSize = size
+            croppingRectPosition = offset
+            density.run {
+                windowSize = Size(
+                    window.width.dp.roundToPx().toFloat(),
+                    window.height.dp.roundToPx().toFloat()
+                )
             }
         }
     }
