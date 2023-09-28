@@ -16,7 +16,7 @@ internal object CroppingUtils {
     ): Boolean {
         val x = croppingRectPosition.x
         val y = croppingRectPosition.y
-        return return touchOffset.x >= x && touchOffset.x <= x + croppingRectSize.width &&
+        return touchOffset.x >= x && touchOffset.x <= x + croppingRectSize.width &&
                 touchOffset.y >= y && touchOffset.y <= y + croppingRectSize.height
     }
 
