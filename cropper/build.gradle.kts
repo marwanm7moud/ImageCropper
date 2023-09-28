@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
-    id("maven-publish")
+    id("convention.publication")
 }
 group = "io.github.marwanm7moud"
 version = "Beta-0.0.1"
