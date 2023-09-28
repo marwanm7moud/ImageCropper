@@ -2,7 +2,10 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
+    id("convention.publication")
 }
+group = "io.github.marwanm7moud"
+version = "Beta-0.0.1"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
@@ -60,7 +63,6 @@ kotlin {
                 implementation(libs.androidx.appcompat)
                 implementation(libs.androidx.activityCompose)
                 implementation(libs.compose.uitooling)
-                implementation("io.ktor:ktor-client-android:$ktor_version")
             }
         }
 
@@ -68,13 +70,11 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.common)
                 implementation(compose.desktop.currentOs)
-                implementation("io.ktor:ktor-client-android:$ktor_version")
             }
         }
 
         val iosMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-darwin:$ktor_version")
             }
         }
 

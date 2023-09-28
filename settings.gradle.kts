@@ -19,3 +19,4 @@ dependencyResolutionManagement {
 }
 include(":cropper")
 include(":desktop")
+includeBuild("convention-plugins")
