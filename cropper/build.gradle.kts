@@ -2,7 +2,10 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
+    id("maven-publish")
 }
+group = "io.github.marwanm7moud"
+version = "Beta-0.0.1"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
