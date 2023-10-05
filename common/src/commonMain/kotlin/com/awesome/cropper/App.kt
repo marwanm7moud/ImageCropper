@@ -29,13 +29,13 @@ fun App() {
     var crop by remember { mutableStateOf(false) }
     var isCropping by remember { mutableStateOf(false) }
     var croppedImage by remember { mutableStateOf<ImageBitmap?>(null) }
-    var filePath = "" //add here your file path
+    var filePath = "C:\\Users\\hp\\Desktop\\4t0oBFrJyweYPt0hocW6RUa0b6H.jpg" //add here your file path
     Box(
-        modifier = Modifier.fillMaxSize().background(Color.LightGray),
+        modifier = Modifier.fillMaxSize().background(Color.Black),
         contentAlignment = Alignment.Center
     ) {
         ImageCropper(
-            modifier = Modifier.fillMaxSize(0.5f),
+            modifier = Modifier.fillMaxSize(0.7f),
             imagePath = filePath,
             onCropStart = {
                 isCropping = true
@@ -52,7 +52,7 @@ fun App() {
                 crop = true
             },
             modifier = Modifier
-                .padding(16.dp).align(Alignment.TopStart)
+                .padding(16.dp).align(Alignment.TopEnd)
         ) {
             Text("Crop Image")
         }

@@ -1,15 +1,22 @@
+import org.jetbrains.dokka.gradle.DokkaTask
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
     id("convention.publication")
+    id("maven-publish")
+    id("org.jetbrains.dokka") version "1.5.0"
 }
 group = "io.github.marwanm7moud"
-version = "Beta-0.0.1"
+version = "Beta-0.0.4"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
+    android{
+        publishLibraryVariants("debug","release" )
+    }
 
     androidTarget {
         compilations.all {
@@ -25,6 +32,11 @@ kotlin {
     }
     jvm("desktop")
 
+    ios{}
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -37,7 +49,6 @@ kotlin {
 
     sourceSets {
 
-        val ktor_version = "2.3.4"
         all {
             languageSettings {
                 optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
@@ -91,4 +102,24 @@ android {
 }
 dependencies {
     implementation(libs.androidx.ui.graphics.android)
+}
+tasks.named("publishDesktopPublicationToSonatypeRepository").configure { dependsOn("signKotlinMultiplatformPublication") }
+tasks.named("publishDesktopPublicationToSonatypeRepository").configure { mustRunAfter("signAndroidReleasePublication") }
+tasks.named("publishKotlinMultiplatformPublicationToSonatypeRepository").configure { dependsOn("signDesktopPublication") }
+tasks.named("publishKotlinMultiplatformPublicationToSonatypeRepository").configure { mustRunAfter("signKotlinMultiplatformPublication") }
+tasks.named("publishDesktopPublicationToMavenLocal").configure { dependsOn("signKotlinMultiplatformPublication") }
+tasks.named("publishKotlinMultiplatformPublicationToMavenLocal").configure { dependsOn("signDesktopPublication") }
+tasks.named("signDesktopPublication").configure { mustRunAfter("publishAndroidReleasePublicationToSonatypeRepository") }
+tasks.named("signDesktopPublication").configure { mustRunAfter("publishAndroidDebugPublicationToSonatypeRepository") }
+tasks.named("signKotlinMultiplatformPublication").configure { dependsOn("publishAndroidDebugPublicationToSonatypeRepository") }
+
+
+val dokkaOutputDir = "$buildDir/dokka"
+
+tasks.dokkaHtml {
+    outputDirectory.set(file(dokkaOutputDir))
+}
+
+val deleteDokkaOutputDir by tasks.register<Delete>("deleteDokkaOutputDirectory") {
+    delete(dokkaOutputDir)
 }
